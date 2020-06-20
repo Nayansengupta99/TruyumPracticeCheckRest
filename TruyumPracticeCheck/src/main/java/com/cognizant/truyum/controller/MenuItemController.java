@@ -10,35 +10,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cognizant.truyum.exception.MenuItemNotFoundException;
 import com.cognizant.truyum.model.MenuItem;
 import com.cognizant.truyum.service.MenuItemService;
 
 @RestController
-@RequestMapping("/menu-items")
-public class MenuItemController 
-{
+@RequestMapping("/menuitems")
+public class MenuItemController {
 	@Autowired
-	private MenuItemService menuItemService;
-	
-	
-	
+	MenuItemService menuItemService;
+
 	@GetMapping()
-	public List<MenuItem> getAllMenuItems()
-	{
-		List<MenuItem> menuItemListCustomer = menuItemService.getMenuItemListCustomer();
-		return  menuItemListCustomer;
-	}
-	
-	@GetMapping("/{id}")
-	public MenuItem getMenuItem(@PathVariable long id)
-	{
-		return menuItemService.getMenuItem(id);
-	}
-	
-	@PutMapping()
-	public void Save(@RequestBody MenuItem menuItem)
-	{
-		menuItemService.Save(menuItem);
+	public List<MenuItem> getMenuItemListCustomer() {
+		return menuItemService.getMenuItemListCustomer();
 	}
 
+	@GetMapping("/{id}")
+	public MenuItem getMenuItem(@PathVariable long id) throws MenuItemNotFoundException {
+		return menuItemService.getMenuItem(id);
+	}
+
+	@PutMapping
+	public void modifyMenuItem(@RequestBody MenuItem menuItem) {
+		menuItemService.modifyMenuItem(menuItem);
+	}
 }

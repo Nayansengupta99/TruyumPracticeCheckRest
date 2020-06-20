@@ -10,33 +10,30 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cognizant.truyum.exception.CartEmptyException;
+import com.cognizant.truyum.exception.MenuItemNotFoundException;
 import com.cognizant.truyum.model.MenuItem;
 import com.cognizant.truyum.service.CartService;
 
 @RestController
-@RequestMapping("/carts")
+@RequestMapping("/cart")
 public class CartController {
-	
+
 	@Autowired
-	private CartService cartService;
-	
-	@PostMapping("/{userid}/{menuItemId}")
-	public void addCartItem(@PathVariable String userid, @PathVariable Long menuItemId)
-	{
-		cartService.addCartItem(userid, menuItemId);
+	CartService cartService;
+
+	@PostMapping("/{userId}/{menuItemId}")
+	void addCartItem(@PathVariable String userId, @PathVariable long menuItemId) throws MenuItemNotFoundException {
+		cartService.addCartItem(userId, menuItemId);
 	}
-	
-	@GetMapping("/{userid}")
-	public List<MenuItem> getAllCartItems(@PathVariable String userid) throws CartEmptyException
-	{
-		return cartService.getAllCartItems(userid);
+
+	@GetMapping("/{userId}")
+	List<MenuItem> getAllCartItems(@PathVariable String userId) {
+		return cartService.getAllCartItems(userId);
 	}
-	
-	@DeleteMapping("/{userid}/{menuItemId}")
-	public void deleteCartItem(@PathVariable String userid,@PathVariable long menuItemId)
-	{
-		cartService.deleteCartItem(userid, menuItemId);
+
+	@DeleteMapping("/{userId}/{menuItemId}")
+	void removeCartItem(@PathVariable String userId, @PathVariable long menuItemId) throws MenuItemNotFoundException {
+		cartService.removeCartItem(userId, menuItemId);
 	}
 
 }
